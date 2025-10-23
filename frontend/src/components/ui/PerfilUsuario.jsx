@@ -10,21 +10,21 @@ function PerfilUsuario() {
         prestamosActivos: 3,
         reseñasEscritas: 23,
         miembroDesde: "Enero 2020",
-        fotoPerfil: "", // URL de imagen
+        fotoPerfil: "",
         telefono: "+51 987 654 321",
         fechaNacimiento: "15/06/1995",
         direccion: "Av. Arequipa 1234, Miraflores",
         sobreMi: "Apasionada por la literatura latinoamericana...",
-        wishlist: ["Cien años de soledad", "El amor en los tiempos del cólera"], // Lista de libros deseados
-        leyendo: ["La casa de los espíritus"], // Libros actualmente leyendo
-        historial: ["1984", "Orgullo y prejuicio", "El principito"], // Historial de préstamos
+        wishlist: ["Cien años de soledad", "El amor en los tiempos del cólera"],
+        leyendo: ["La casa de los espíritus"],
+        historial: ["1984", "Orgullo y prejuicio", "El principito"],
         reseñasRecientes: [
             { libro: "Cien años de soledad", reseña: "Una obra maestra..." },
             { libro: "El principito", reseña: "Un clásico atemporal..." }
         ],
-        recomendaciones: ["Rayuela", "Ficciones"], // Recomendaciones basadas en lecturas
-        notificaciones: { devoluciones: true, nuevosLibros: false, eventos: false }, // Configuración
-        badges: ["Lector Ávido", "Crítico Literario"] // Logros
+        recomendaciones: ["Rayuela", "Ficciones"],
+        notificaciones: { devoluciones: true, nuevosLibros: false, eventos: false },
+        badges: ["Lector Ávido", "Crítico Literario"]
     });
 
     const handleEdit = () => {
@@ -32,7 +32,6 @@ function PerfilUsuario() {
     };
 
     const handleSave = () => {
-        // Lógica para guardar (e.g., API call)
         setIsEditing(false);
     };
 
@@ -64,14 +63,13 @@ function PerfilUsuario() {
         }
     };
 
-    // Función para calcular porcentaje (ejemplo: libros leídos sobre 100)
     const getProgress = (value, max = 100) => (value / max) * 100;
 
     return (
         <div className="perfil-container">
             <div className="perfil-header">
                 <div className="perfil-img">
-                    <img src={userData.fotoPerfil || "/default-image.png"} alt="Foto de perfil" />
+                    <img src={userData.fotoPerfil || ""}  />
                     {isEditing && (
                         <input type="file" accept="image/*" onChange={handleFileChange} className="file-input" />
                     )}
@@ -142,7 +140,6 @@ function PerfilUsuario() {
                 </div>
             </div>
 
-            {/* Nuevas secciones con iconos */}
             <div className="perfil-section">
                 <h3><span className="section-icon">📖</span> Libros Actualmente Leyendo</h3>
                 <ul>

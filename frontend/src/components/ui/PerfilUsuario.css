@@ -1,0 +1,307 @@
+/* PerfilUsuario.css */
+.perfil-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8f4f8 100%);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.perfil-header {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.perfil-img img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 3px solid white;
+}
+
+.file-input {
+    margin-top: 10px;
+    display: block;
+}
+
+.perfil-info h1 {
+    margin: 0;
+    font-size: 28px;
+    color: white;
+}
+
+.perfil-info p {
+    margin: 5px 0;
+    color: #e0e0e0;
+}
+
+.editar-btn, .guardar-btn, .add-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.editar-btn:hover, .guardar-btn:hover, .add-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.edit-input, .edit-textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.edit-input:focus, .edit-textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+.edit-textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.perfil-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+    margin: 10px;
+}
+
+.stat-icon {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.stat-item p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.stat-item h2 {
+    margin: 5px 0;
+    font-size: 28px;
+    color: #333;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4a90e2 0%, #357abd 100%);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.perfil-section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s, transform 0.2s;
+}
+
+.perfil-section:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.section-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.perfil-section h3 {
+    margin-top: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.perfil-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.perfil-section li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.reseña-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.notificaciones-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notificacion-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.notificacion-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    font-size: 30px;
+    margin-right: 15px;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-content h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.card-content p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Estilo para el switch toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4a90e2;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.perfil-footer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-personal-info h3 {
+    margin-top: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.perfil-personal-info p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.perfil-personal-info strong {
+    color: #333;
+}

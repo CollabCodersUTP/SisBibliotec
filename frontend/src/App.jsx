@@ -1,13 +1,17 @@
-
-import './App.css'
-import ResponsiveAppBar from './components/navigation'
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import AppLayout from "./components/AppLayout";
+import { LoginRegister } from "./components/LoginRegister";
 
 function App() {
-
   return (
-    <>
-    <ResponsiveAppBar/>
-    </>
+    <Routes>
+      {/* Layout principal con sidebar y contenido */}
+      <Route path="/*" element={<AppLayout />} />
+
+      {/* Ruta independiente para login/registro */}
+      <Route path="/LoginRegister" element={<LoginRegister />} />
+    </Routes>
   );
 }
 

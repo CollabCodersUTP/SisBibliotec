@@ -9,7 +9,7 @@ function App() {
       {/* Layout principal con sidebar y contenido */}
       <Route path="/*" element={<AppLayout />} />
 
-      {/* Ruta independiente para login/registro */}
+      {/* Ruta independiente para login/registro  indefinidos*/}
       <Route path="/LoginRegister" element={<LoginRegister />} />
     </Routes>
   );

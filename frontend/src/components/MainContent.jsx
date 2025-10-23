@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { LayoutTextFlipDemo } from "./LayoutTextFlipDemo";
 import { Typography, Box, Button } from "@mui/material";
 import imgcastillo from "../assets/castillo.jpg"
+import PerfilUsuario from "./ui/PerfilUsuario"
 
 export default function MainContent() {
   return (
@@ -97,9 +98,7 @@ export default function MainContent() {
         <Route
           path="/profile"
           element={
-            <Typography variant="h4" sx={{ textAlign: "center" }}>
-              Sección Profile
-            </Typography>
+            <PerfilUsuario/>
           }
         />
 

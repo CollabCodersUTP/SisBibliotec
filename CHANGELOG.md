@@ -16,7 +16,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Corregido
 - Correcciones pendientes
 
-## [1.0.1] - 2025-10-21
+## V1.0.1 - 2025-10-21
 
 ### Agregado
 - **Backend (Spring Boot 3.5.5)**

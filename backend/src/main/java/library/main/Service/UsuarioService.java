@@ -3,6 +3,7 @@ package library.main.Service;
 import library.main.Entity.Usuarios;
 import library.main.Repository.UsuariosRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,40 +11,38 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-
 public class UsuarioService {
 
     private final UsuariosRepository ur;
-
-
+    private final PasswordEncoder passwordEncoder;
 
     //-------------------------------------------------------------------------------
-    // Crear nuevo usuario
+    // Ahtgregado Seguridad
     public Usuarios registroUsuario(Usuarios usuario) {
         Optional<Usuarios> existente = ur.findByEmail(usuario.getEmail());
         if (existente.isPresent()) {
             throw new RuntimeException("El correo ya está registrado");
         }
+
+        // encriptador
+        String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(passwordEncriptada);
+
         return ur.save(usuario);
     }
 
     //-------------------------------------------------------------------------------
-    // Login de usuario
+    // Login validando contraseña encriptada
     public Usuarios login(String email, String contraseña) {
-        Optional<Usuarios> usuarioOpt = ur.findByEmail(email);
+        Usuarios usuario = ur.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Correo no registrado"));
 
-        if (usuarioOpt.isPresent()) {
-            Usuarios usuario = usuarioOpt.get();
-
-            // Verificar contraseña
-            if (usuario.getPassword().equals(contraseña)) {
-                return usuario;
-            } else {
-                throw new RuntimeException("Contraseña incorrecta");
-            }
-        } else {
-            throw new RuntimeException("Correo no registrado");
+        // comparar la contraseña escrita con la encriptada en la BD
+        if (!passwordEncoder.matches(contraseña, usuario.getPassword())) {
+            throw new RuntimeException("Contraseña incorrecta");
         }
+
+        return usuario;
     }
 
     //-------------------------------------------------------------------------------

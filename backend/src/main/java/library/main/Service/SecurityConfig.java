@@ -15,13 +15,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Esta parte permite /registro y /login sin estar autenticado
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // para usar Postman más fácil
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/registro", "/login").permitAll() // <-- habilita estas rutas
+                        .requestMatchers("/registro", "/login").permitAll()
                         .anyRequest().authenticated()
                 );
 

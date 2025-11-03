@@ -24,14 +24,13 @@ public class UsuarioService {
             throw new RuntimeException("El correo ya está registrado");
         }
 
-        // encriptador
+      
         String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
         usuario.setPassword(passwordEncriptada);
 
         return ur.save(usuario);
     }
 
-    //-------------------------------------------------------------------------------
     // Login validando contraseña encriptada
     public Usuarios login(String email, String contraseña) {
         Usuarios usuario = ur.findByEmail(email)

@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import { LoginRegister } from "./components/LoginRegister";
+import PerfilUsuario from "./components/ui/PerfilUsuario";
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
 
       {/* Ruta independiente para login/registro */}
       <Route path="/LoginRegister" element={<LoginRegister />} />
+      <Route path="/myacount" element={<PerfilUsuario/>} />
+      <Route path="/inicio" element={<AppLayout/>} />
     </Routes>
   );
 }

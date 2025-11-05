@@ -1,6 +1,6 @@
 // src/components/MainContent.jsx
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { LayoutTextFlipDemo } from "./LayoutTextFlipDemo";
 import { Typography, Box, Button } from "@mui/material";
 import imgcastillo from "../assets/castillo.jpg"
@@ -49,7 +49,7 @@ export default function MainContent() {
                 <Button variant="contained" color="primary">
                   Ver Catálogo
                 </Button>
-                <Button variant="outlined" color="primary">
+                <Button component = {Link} to= "/myacount" variant="outlined" color="primary">
                   Mi Cuenta
                 </Button>
               </Box>

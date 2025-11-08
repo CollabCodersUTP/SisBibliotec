@@ -21,7 +21,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/registro", "/login").permitAll()
+                        //PARA PERMITIR PRUEBAS CON POSTMAN LUEGO SE BORRA
+                        .requestMatchers("/registro", "/login", "/libro/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

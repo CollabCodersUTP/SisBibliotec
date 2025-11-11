@@ -1,19 +1,26 @@
+// src/App.jsx
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import { LoginRegister } from "./components/LoginRegister";
 import PerfilUsuario from "./components/ui/PerfilUsuario";
+import Catalogo from "./components/Catalogo";
+import MainContent from "./components/MainContent";
 
 function App() {
   return (
     <Routes>
-      {/* Layout principal con sidebar y contenido */}
-      <Route path="/*" element={<AppLayout />} />
+      {/* 🟣 LoginRegister SIN sidebar */}
+      <Route path="/*" element={<LoginRegister />} />
 
-      {/* Ruta independiente para login/registro */}
-      <Route path="/LoginRegister" element={<LoginRegister />} />
-      <Route path="/myacount" element={<PerfilUsuario/>} />
-      <Route path="/inicio" element={<AppLayout/>} />
+      {/* 🟢 TODAS las demás rutas usan AppLayout */}
+      <Route element={<AppLayout />}>
+        <Route path="/inicio" element={<MainContent />} />
+        <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/profile" element={<PerfilUsuario />} />
+        <Route path="/account" element={<PerfilUsuario />} />
+        <Route path="/dashboard" element={<MainContent />} />
+      </Route>
     </Routes>
   );
 }

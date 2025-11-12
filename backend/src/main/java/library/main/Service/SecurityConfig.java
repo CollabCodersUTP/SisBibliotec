@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         //PARA PERMITIR PRUEBAS CON POSTMAN LUEGO SE BORRA
                         .requestMatchers("/registro", "/login", "/libro/**").permitAll()
+
                         .anyRequest().authenticated()
                 );
 

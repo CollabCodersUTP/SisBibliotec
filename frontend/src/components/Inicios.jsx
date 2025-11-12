@@ -5,8 +5,9 @@ import { LayoutTextFlipDemo } from "./LayoutTextFlipDemo";
 import { Typography, Box, Button } from "@mui/material";
 import imgcastillo from "../assets/castillo.jpg"
 import PerfilUsuario from "./ui/PerfilUsuario"
+import Catalogo from "./Catalogo";
 
-export default function MainContent() {
+export default function Inicio() {
   return (
     <Box
       sx={{
@@ -80,18 +81,14 @@ export default function MainContent() {
         <Route
           path="/catalogo"
           element={
-            <Typography variant="h4" sx={{ textAlign: "center" }}>
-              Sección de Catálogo
-            </Typography>
+            <Catalogo/>
           }
         />
 
         <Route
           path="/myaccount"
           element={
-            <Typography variant="h4" sx={{ textAlign: "center" }}>
-              Sección Mi Cuenta
-            </Typography>
+            <PerfilUsuario/>
           }
         />
 

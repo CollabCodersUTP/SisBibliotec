@@ -1,0 +1,21 @@
+/* Layout.css */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #111;
+  color: white;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background: #f4f4f4;
+  overflow-y: auto;
+}

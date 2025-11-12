@@ -10,10 +10,10 @@ import MainContent from "./components/MainContent";
 function App() {
   return (
     <Routes>
-      {/* 🟣 LoginRegister SIN sidebar */}
+      {/* 🟣 LoginRegister SIN sidebar (Ruta base que maneja login/registro) */}
       <Route path="/*" element={<LoginRegister />} />
 
-      {/* 🟢 TODAS las demás rutas usan AppLayout */}
+      {/* 🟢 TODAS las demás rutas usan AppLayout (Contenido autenticado) */}
       <Route element={<AppLayout />}>
         <Route path="/inicio" element={<MainContent />} />
         <Route path="/catalogo" element={<Catalogo />} />

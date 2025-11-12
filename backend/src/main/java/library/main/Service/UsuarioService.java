@@ -23,6 +23,8 @@ public class UsuarioService {
         if (existente.isPresent()) {
             throw new RuntimeException("El correo ya está registrado");
         }
+
+
         String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
         usuario.setPassword(passwordEncriptada);
 

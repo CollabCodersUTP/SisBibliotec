@@ -5,7 +5,7 @@ import "./LoginRegister.css";
 import Swal from "sweetalert2";
 
 export function LoginRegister() {
-  const API_URL = import.meta.env.VITE_API_URL; 
+  const API_URL = import.meta.env.VITE_API_URL;
   // Ejemplo: https://tu-backend.up.railway.app
 
   const [isActive, setIsActive] = useState(false);
@@ -32,10 +32,11 @@ export function LoginRegister() {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `${API_URL}/login?email=${loginData.email}&password=${loginData.password}`,
-        { method: "POST" }
-      );
+      const response = await fetch(`${API_URL}/api/usuarios/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginData),
+      });
 
       const result = await response.json();
 
@@ -74,7 +75,7 @@ export function LoginRegister() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_URL}/registro`, {
+      const response = await fetch(`${API_URL}/api/usuarios/registro`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registerData),
@@ -112,7 +113,6 @@ export function LoginRegister() {
   return (
     <div className="login-page">
       <div className={`container ${isActive ? "active" : ""}`}>
-        
         {/* LOGIN */}
         <div className="form-box login">
           <form onSubmit={handleLoginSubmit}>
@@ -142,7 +142,9 @@ export function LoginRegister() {
               <i className="bx bxs-lock-alt"></i>
             </div>
 
-            <button type="submit" className="btn">Login</button>
+            <button type="submit" className="btn">
+              Login
+            </button>
           </form>
         </div>
 
@@ -187,7 +189,9 @@ export function LoginRegister() {
               <i className="bx bxs-lock-alt"></i>
             </div>
 
-            <button type="submit" className="btn">Register</button>
+            <button type="submit" className="btn">
+              Register
+            </button>
           </form>
         </div>
 
@@ -209,7 +213,6 @@ export function LoginRegister() {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );

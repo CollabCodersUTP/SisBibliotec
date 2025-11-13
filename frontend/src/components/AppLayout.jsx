@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Drawer, AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "./Sidebar";
-import MainContent from "./MainContent";
+import { Outlet } from "react-router-dom"; // 👈 Importa Outlet
 
 const drawerWidth = 180;
 
@@ -35,7 +35,7 @@ export default function AppLayout() {
           flexShrink: 0,
         }}
       >
-        {/* Permanente en desktop/tablet */}
+        {/* Permanente en desktop */}
         <Drawer
           variant="permanent"
           sx={{
@@ -62,7 +62,7 @@ export default function AppLayout() {
         </Drawer>
       </Box>
 
-      {/* MainContent */}
+      {/* 👇 Aquí React Router inyecta el contenido de cada sección */}
       <Box
         sx={{
           flexGrow: 1,
@@ -71,7 +71,7 @@ export default function AppLayout() {
           minWidth: 0,
         }}
       >
-        <MainContent />
+        <Outlet /> {/* ✅ En lugar de <MainContent /> */}
       </Box>
     </Box>
   );

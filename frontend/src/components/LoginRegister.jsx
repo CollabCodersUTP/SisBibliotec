@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "boxicons/css/boxicons.min.css";
 import "./LoginRegister.css";
-import Swal from "sweetalert2"; // ✅ Importar SweetAlert2
+import Swal from "sweetalert2";
 
 export function LoginRegister() {
+  const API_URL = import.meta.env.VITE_API_URL; 
+  // Ejemplo: https://tu-backend.up.railway.app
+
   const [isActive, setIsActive] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({
@@ -27,17 +30,18 @@ export function LoginRegister() {
   // ✅ LOGIN
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await fetch(
-        `http://localhost:8080/login?email=${loginData.email}&password=${loginData.password}`,
+        `${API_URL}/login?email=${loginData.email}&password=${loginData.password}`,
         { method: "POST" }
       );
+
       const result = await response.json();
 
       if (response.ok) {
         localStorage.setItem("usuario", JSON.stringify(result));
 
-        // ✅ Alerta moderna de bienvenida
         Swal.fire({
           title: `¡Bienvenido ${result.nombre || "usuario"}! 👋`,
           text: "Inicio de sesión exitoso.",
@@ -50,13 +54,13 @@ export function LoginRegister() {
       } else {
         Swal.fire({
           title: "Error en el login",
-          text: result.message || "Verifica tus credenciales.",
+          text: result.message || "Credenciales incorrectas.",
           icon: "error",
           confirmButtonColor: "#d33",
         });
       }
-    } catch (error) {
-      console.error("Error en login:", error);
+    } catch (err) {
+      console.error(err);
       Swal.fire({
         title: "Error de conexión",
         text: "No se pudo conectar con el servidor.",
@@ -68,12 +72,14 @@ export function LoginRegister() {
   // ✅ REGISTRO
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await fetch("http://localhost:8080/registro", {
+      const response = await fetch(`${API_URL}/registro`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registerData),
       });
+
       const result = await response.json();
 
       if (response.ok) {
@@ -84,18 +90,17 @@ export function LoginRegister() {
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Ir al login",
         }).then(() => {
-          setIsActive(false); // vuelve al login
+          setIsActive(false);
         });
       } else {
         Swal.fire({
           title: "Error en el registro",
-          text: result.message || "Verifica los datos ingresados.",
+          text: result.message || "Datos incorrectos.",
           icon: "error",
           confirmButtonColor: "#d33",
         });
       }
-    } catch (error) {
-      console.error("Error en registro:", error);
+    } catch {
       Swal.fire({
         title: "Error de conexión",
         text: "No se pudo conectar con el servidor.",
@@ -107,10 +112,12 @@ export function LoginRegister() {
   return (
     <div className="login-page">
       <div className={`container ${isActive ? "active" : ""}`}>
+        
         {/* LOGIN */}
         <div className="form-box login">
           <form onSubmit={handleLoginSubmit}>
             <h1>Login</h1>
+
             <div className="input-box">
               <input
                 type="email"
@@ -122,6 +129,7 @@ export function LoginRegister() {
               />
               <i className="bx bxs-user"></i>
             </div>
+
             <div className="input-box">
               <input
                 type="password"
@@ -133,12 +141,8 @@ export function LoginRegister() {
               />
               <i className="bx bxs-lock-alt"></i>
             </div>
-            <div className="forgot-link">
-              <a href="#">Forgot Password?</a>
-            </div>
-            <button type="submit" className="btn">
-              Login
-            </button>
+
+            <button type="submit" className="btn">Login</button>
           </form>
         </div>
 
@@ -146,6 +150,7 @@ export function LoginRegister() {
         <div className="form-box register">
           <form onSubmit={handleRegisterSubmit}>
             <h1>Registration</h1>
+
             <div className="input-box">
               <input
                 type="text"
@@ -157,6 +162,7 @@ export function LoginRegister() {
               />
               <i className="bx bxs-user"></i>
             </div>
+
             <div className="input-box">
               <input
                 type="email"
@@ -168,6 +174,7 @@ export function LoginRegister() {
               />
               <i className="bx bxs-envelope"></i>
             </div>
+
             <div className="input-box">
               <input
                 type="password"
@@ -179,9 +186,8 @@ export function LoginRegister() {
               />
               <i className="bx bxs-lock-alt"></i>
             </div>
-            <button type="submit" className="btn">
-              Register
-            </button>
+
+            <button type="submit" className="btn">Register</button>
           </form>
         </div>
 
@@ -194,6 +200,7 @@ export function LoginRegister() {
               Register
             </button>
           </div>
+
           <div className="toggle-panel toggle-right">
             <h1>Welcome Back!</h1>
             <p>Already have an account?</p>
@@ -202,6 +209,7 @@ export function LoginRegister() {
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -15,17 +15,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        //PARA PERMITIR PRUEBAS CON POSTMAN LUEGO SE BORRA
-                        .requestMatchers("/registro", "/login", "/libro/**").permitAll()
-
-                        .anyRequest().authenticated()
-                );
+                        .requestMatchers(
+                                "/api/usuarios/registro",
+                                "/api/usuarios/login",
+                                "/libro/**",
+                                "/favicon.ico")
+                        .permitAll()
+                        .anyRequest().permitAll());
 
         return http.build();
     }

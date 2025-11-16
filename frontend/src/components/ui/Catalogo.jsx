@@ -14,125 +14,57 @@ import {
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import StarIcon from "@mui/icons-material/Star";
+import { librosData, gifsPorTipo } from "./librosData";
+import DetallesLibro from "./DetallesLibro";
 
-// ✅ Función auxiliar tipo Shadcn (para concatenar clases)
+// ✅ Función auxiliar tipo Shadcn
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Catalogo() {
-  const items = [
-    {
-      id: 1,
-      titulo: "One Piece",
-      genero: "Aventura",
-      tipo: "Cuentos",
-      estado: "En emisión",
-      imagen: "https://i.redd.it/50sm6l6r05m51.jpg",
-    },
-    {
-      id: 2,
-      titulo: "Naruto",
-      genero: "Acción",
-      tipo: "Cuentos",
-      estado: "Finalizado",
-      imagen: "https://i.imgur.com/0H5RZkx.jpg",
-    },
-    {
-      id: 3,
-      titulo: "Death Note",
-      genero: "Suspenso",
-      tipo: "Novela",
-      estado: "Finalizado",
-      imagen: "https://i.imgur.com/gIoQz5M.jpg",
-    },
-    {
-      id: 4,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Libro",
-      estado: "Finalizado",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-    {
-      id: 5,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Libro",
-      estado: "En emisión",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-    {
-      id: 6,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Novela",
-      estado: "Finalizado",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-    {
-      id: 7,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Cuento",
-      estado: "Finalizado",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-    {
-      id: 8,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Libro",
-      estado: "En emisión",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-    {
-      id: 9,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Libro",
-      estado: "Finalizado",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-    {
-      id: 10,
-      titulo: "Dune",
-      genero: "Ciencia ficción",
-      tipo: "Novela",
-      estado: "En emisión",
-      imagen: "https://i.imgur.com/tpRytgz.jpg",
-    },
-  ];
-
-  // 🎚️ Filtros
+  // 🎚️ Estados
   const [genero, setGenero] = useState("");
   const [estado, setEstado] = useState("");
   const [tipo, setTipo] = useState("");
+  const [libroSeleccionado, setLibroSeleccionado] = useState(null);
 
-  // 🎞️ GIFs por tipo
-  const gifsPorTipo = {
-    Cuentos:
-      "https://i.pinimg.com/736x/93/97/0d/93970dde9db766c47f4c39d82d2b778f.jpg",
-    Novela:
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExanpqMHh2cDY1aGJlems3Zzh1OGpvMGR2ZGNxZjg0Z2NzcTE2dzM3dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/23hUeKyLx8eEriCx9L/giphy.gif",
-    Libro:
-      "https://img.freepik.com/fotos-premium/uma-biblioteca-magica-cheia-de-livros-flutuantes-e-manuscritos-encantados_1029473-316830.jpg",
-  };
-
-  const filtrados = items.filter(
+  const filtrados = librosData.filter(
     (item) =>
       (genero === "" || item.genero === genero) &&
       (estado === "" || item.estado === estado) &&
       (tipo === "" || item.tipo === tipo)
   );
 
+  // 🔙 Si hay libro seleccionado, mostrar DetallesLibro
+  if (libroSeleccionado) {
+    return (
+      <DetallesLibro
+        libro={libroSeleccionado}
+        onVolver={() => setLibroSeleccionado(null)}
+      />
+    );
+  }
+
+  // 📚 Vista del catálogo
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3, bgcolor: "#000", minHeight: "100vh" }}>
       {/* 🎚️ Filtros */}
       <Box sx={{ display: "flex", gap: 2, mb: 4, flexWrap: "wrap" }}>
         <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel>Género</InputLabel>
-          <Select value={genero} onChange={(e) => setGenero(e.target.value)} label="Género">
+          <InputLabel sx={{ color: "#fff" }}>Género</InputLabel>
+          <Select
+            value={genero}
+            onChange={(e) => setGenero(e.target.value)}
+            label="Género"
+            sx={{
+              color: "#fff",
+              ".MuiOutlinedInput-notchedOutline": { borderColor: "#333" },
+              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
+              ".MuiSvgIcon-root": { color: "#fff" }
+            }}
+          >
             <MenuItem value="">Todos</MenuItem>
             <MenuItem value="Aventura">Aventura</MenuItem>
             <MenuItem value="Acción">Acción</MenuItem>
@@ -142,8 +74,18 @@ export default function Catalogo() {
         </FormControl>
 
         <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel>Estado</InputLabel>
-          <Select value={estado} onChange={(e) => setEstado(e.target.value)} label="Estado">
+          <InputLabel sx={{ color: "#fff" }}>Estado</InputLabel>
+          <Select
+            value={estado}
+            onChange={(e) => setEstado(e.target.value)}
+            label="Estado"
+            sx={{
+              color: "#fff",
+              ".MuiOutlinedInput-notchedOutline": { borderColor: "#333" },
+              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
+              ".MuiSvgIcon-root": { color: "#fff" }
+            }}
+          >
             <MenuItem value="">Todos</MenuItem>
             <MenuItem value="En emisión">En emisión</MenuItem>
             <MenuItem value="Finalizado">Finalizado</MenuItem>
@@ -151,22 +93,33 @@ export default function Catalogo() {
         </FormControl>
 
         <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel>Tipo</InputLabel>
-          <Select value={tipo} onChange={(e) => setTipo(e.target.value)} label="Tipo">
+          <InputLabel sx={{ color: "#fff" }}>Tipo</InputLabel>
+          <Select
+            value={tipo}
+            onChange={(e) => setTipo(e.target.value)}
+            label="Tipo"
+            sx={{
+              color: "#fff",
+              ".MuiOutlinedInput-notchedOutline": { borderColor: "#333" },
+              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
+              ".MuiSvgIcon-root": { color: "#fff" }
+            }}
+          >
             <MenuItem value="">Todos</MenuItem>
             <MenuItem value="Cuentos">Cuentos</MenuItem>
-            <MenuItem value="Novela">Novela Ligera</MenuItem>
+            <MenuItem value="Novela">Novela</MenuItem>
             <MenuItem value="Libro">Libro</MenuItem>
           </Select>
         </FormControl>
       </Box>
 
-      {/* 📚 Catálogo */}
+      {/* 📚 Catálogo de tarjetas */}
       <Grid container spacing={3}>
         {filtrados.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
             {/* 🎴 Card */}
             <div
+              onClick={() => setLibroSeleccionado(item)}
               className={cn(
                 "group relative cursor-pointer overflow-hidden h-96 rounded-lg shadow-xl flex flex-col justify-end p-4 border border-transparent dark:border-neutral-800 transition-all duration-500 group-hover:scale-105",
                 "bg-cover bg-center"
@@ -208,6 +161,20 @@ export default function Catalogo() {
                 <p className="text-sm mt-2 opacity-90">Tipo: {item.tipo}</p>
 
                 <div className="mt-3 flex items-center gap-2">
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    {[...Array(5)].map((_, i) => (
+                      <StarIcon
+                        key={i}
+                        sx={{
+                          fontSize: 18,
+                          color: i < Math.floor(item.calificacion) ? "#fbbf24" : "#6b7280"
+                        }}
+                      />
+                    ))}
+                    <Typography variant="caption" sx={{ ml: 0.5, color: "white" }}>
+                      ({item.calificacion})
+                    </Typography>
+                  </Box>
                   <IconButton sx={{ color: "white" }}>
                     <FavoriteIcon />
                   </IconButton>
@@ -220,7 +187,7 @@ export default function Catalogo() {
 
       {/* 🕵️‍♂️ Sin resultados */}
       {filtrados.length === 0 && (
-        <Typography sx={{ mt: 4, textAlign: "center" }}>
+        <Typography sx={{ mt: 4, textAlign: "center", color: "#999" }}>
           No se encontraron resultados con esos filtros.
         </Typography>
       )}

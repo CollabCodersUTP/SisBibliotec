@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import { LoginRegister } from "./components/LoginRegister";
 import PerfilUsuario from "./components/ui/PerfilUsuario";
-import Catalogo from "./components/Catalogo";
+import Catalogo from "./components/ui/Catalogo";
 import MainContent from "./components/MainContent";
 
 function App() {

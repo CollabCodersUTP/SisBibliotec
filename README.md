@@ -34,7 +34,7 @@ SisBibliotec es una aplicación web full-stack que moderniza la gestión bibliot
 ## 🛠️ Tecnologías
 
 ### Backend (API REST)
-- **Java 17** - Lenguaje de programación principal
+- **Java 21** - Lenguaje de programación principal
 - **Spring Boot 3.5.5** - Framework de desarrollo
 - **Spring Data JPA** - Persistencia de datos
 - **Spring Security** - Autenticación y autorización

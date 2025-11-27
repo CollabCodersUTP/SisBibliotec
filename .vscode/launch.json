@@ -1,4 +1,19 @@
 {
+<<<<<<< HEAD
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-MainApplication<main>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "library.main.MainApplication",
+      "projectName": "main",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
+=======
     "configurations": [
         {
             "type": "java",
@@ -12,3 +27,4 @@
         }
     ]
 }
+>>>>>>> origin/main

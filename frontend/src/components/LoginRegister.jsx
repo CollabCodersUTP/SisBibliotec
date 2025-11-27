@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 
 export function LoginRegister() {
   const API_URL = import.meta.env.VITE_API_URL;
-  // Ejemplo: https://tu-backend.up.railway.app
 
   const [isActive, setIsActive] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });

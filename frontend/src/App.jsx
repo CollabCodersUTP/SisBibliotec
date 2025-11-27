@@ -1,0 +1,18 @@
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import AppLayout from "./components/AppLayout";
+import { LoginRegister } from "./components/LoginRegister";
+
+function App() {
+  return (
+    <Routes>
+      {/* Layout principal con sidebar y contenido */}
+      <Route path="/*" element={<AppLayout />} />
+
+      {/* Ruta independiente para login/registro  indefinidos*/}
+      <Route path="/LoginRegister" element={<LoginRegister />} />
+    </Routes>
+  );
+}
+
+export default App;

@@ -7,12 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-<<<<<<< HEAD
-    "preview": "vite preview"
-=======
     "preview": "vite preview",
     "test": "jest"
->>>>>>> origin/main
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -28,10 +24,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.4",
-<<<<<<< HEAD
-=======
     "sweetalert2": "^11.26.3",
->>>>>>> origin/main
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -45,12 +38,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
-<<<<<<< HEAD
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "vite": "^7.1.2"
-  }
-=======
     "jest": "^30.2.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
@@ -61,5 +48,4 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
->>>>>>> origin/main
 }

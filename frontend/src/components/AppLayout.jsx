@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Drawer,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "./Sidebar";
-import MainContent from "./MainContent";
+import { Outlet } from "react-router-dom"; // 👈 Importa Outlet
 
 const drawerWidth = 180;
 
@@ -22,10 +15,7 @@ export default function AppLayout() {
       {/* AppBar móvil */}
       <AppBar
         position="fixed"
-        sx={{
-          display: { xs: "block", sm: "none" },
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
+        sx={{ display: { xs: "block", sm: "none" }, zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
           <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
@@ -45,21 +35,19 @@ export default function AppLayout() {
           flexShrink: 0,
         }}
       >
-        {/* Permanente en desktop/tablet */}
+        {/* Permanente en desktop */}
         <Drawer
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
+            "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
           }}
           open
         >
           <Sidebar />
         </Drawer>
 
+        {/* Temporal en móvil */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -67,17 +55,14 @@ export default function AppLayout() {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
+            "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
           }}
         >
           <Sidebar />
         </Drawer>
       </Box>
 
-      {/* MainContent */}
+      {/* 👇 Aquí React Router inyecta el contenido de cada sección */}
       <Box
         sx={{
           flexGrow: 1,
@@ -86,7 +71,7 @@ export default function AppLayout() {
           minWidth: 0,
         }}
       >
-        <MainContent />
+        <Outlet /> {/* ✅ En lugar de <MainContent /> */}
       </Box>
     </Box>
   );

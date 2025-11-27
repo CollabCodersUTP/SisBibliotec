@@ -2,7 +2,6 @@ package library.main.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,7 +29,14 @@ public class Usuarios {
     @Enumerated(EnumType.STRING)
     private Rol rol = Rol.LECTOR;
 
-    private LocalDateTime fechaRegistro = LocalDateTime.now();
+    private LocalDateTime fechaRegistro;
+
+    @PrePersist
+    public void prePersist() {
+        fechaRegistro = LocalDateTime.now();
+        if (email != null)
+            email = email.toLowerCase().trim();
+    }
 
     public enum Rol {
         ADMIN, LECTOR

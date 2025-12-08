@@ -45,4 +45,11 @@ public class PrestamoController {
         return ResponseEntity.ok("Estados de préstamos actualizados correctamente.");
     }
 
+    // Eliminar préstamo
+    @DeleteMapping("/{idPrestamo}")
+    public ResponseEntity<String> eliminarPrestamo(@PathVariable Long idPrestamo) {
+        prestamoService.eliminarPrestamo(idPrestamo);
+        return ResponseEntity.ok("Préstamo eliminado.");
+    }
+    
 }

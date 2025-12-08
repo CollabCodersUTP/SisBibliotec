@@ -38,6 +38,11 @@ public class PrestamoController {
         return ResponseEntity.ok(prestamoService.listarPorUsuario(idUsuario));
     }
 
-
+    // Actualizar préstamos atrasados
+    @PutMapping("/actualizar-atrasados")
+    public ResponseEntity<String> actualizarAtrasados() {
+        prestamoService.actualizarAtrasados();
+        return ResponseEntity.ok("Estados de préstamos actualizados correctamente.");
+    }
 
 }

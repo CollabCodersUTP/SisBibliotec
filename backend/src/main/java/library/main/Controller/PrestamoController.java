@@ -1,4 +1,11 @@
 package library.main.Controller;
+import library.main.Entity.Prestamo;
+import library.main.Service.PrestamoService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
 @RestController
 @RequestMapping("/prestamos")
 @RequiredArgsConstructor
@@ -23,4 +30,14 @@ public class PrestamoController {
     public ResponseEntity<List<Prestamo>> listarPrestamos() {
         return ResponseEntity.ok(prestamoService.listarPrestamos());
     }
+
+
+    // Listar préstamos por cada usuariosdx
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Prestamo>> listarPorUsuario(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(prestamoService.listarPorUsuario(idUsuario));
+    }
+
+
+
 }

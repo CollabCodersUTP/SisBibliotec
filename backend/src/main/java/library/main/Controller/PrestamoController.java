@@ -18,4 +18,9 @@ public class PrestamoController {
         return ResponseEntity.ok(prestamo);
     }
 
+    // Listar todos los préstamos
+    @GetMapping
+    public ResponseEntity<List<Prestamo>> listarPrestamos() {
+        return ResponseEntity.ok(prestamoService.listarPrestamos());
+    }
 }

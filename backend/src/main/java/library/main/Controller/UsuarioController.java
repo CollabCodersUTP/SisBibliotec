@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin("/api/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;

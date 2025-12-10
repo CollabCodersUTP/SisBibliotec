@@ -1,4 +1,4 @@
-name: CI - Build images, push to GHCR, smoke test & deploy to Render
+name: CI - Build images, push to GHCR, deploy to Railway & Render
 
 on:
   push:
@@ -13,6 +13,7 @@ jobs:
 
     env:
       ORG: ${{ secrets.ORG_NAME }}
+      COMMIT_SHA: ${{ github.sha }}
 
     steps:
       - name: Checkout
@@ -27,16 +28,16 @@ jobs:
       # Build & push backend
       - name: Build backend image
         run: |
-          docker build -f backend/Dockerfile -t ghcr.io/${{ env.ORG }}/backend:latest ./backend
+          docker build -f backend/Dockerfile -t ghcr.io/${{ env.ORG }}/backend:${{ env.COMMIT_SHA }} ./backend
       - name: Push backend image
-        run: docker push ghcr.io/${{ env.ORG }}/backend:latest
+        run: docker push ghcr.io/${{ env.ORG }}/backend:${{ env.COMMIT_SHA }}
 
       # Build & push frontend
       - name: Build frontend image
         run: |
-          docker build -f frontend/Dockerfile -t ghcr.io/${{ env.ORG }}/frontend:latest ./frontend
+          docker build -f frontend/Dockerfile --build-arg VITE_API_URL=${{ secrets.RAILWAY_BACKEND_URL }} -t ghcr.io/${{ env.ORG }}/frontend:${{ env.COMMIT_SHA }} ./frontend
       - name: Push frontend image
-        run: docker push ghcr.io/${{ env.ORG }}/frontend:latest
+        run: docker push ghcr.io/${{ env.ORG }}/frontend:${{ env.COMMIT_SHA }}
 
       # Optional: smoke test backend image (run ephemeral container and curl /health)
       - name: Smoke test backend image

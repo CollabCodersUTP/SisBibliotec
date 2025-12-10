@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
 public class Usuarios {
 
     @Id
@@ -41,4 +43,6 @@ public class Usuarios {
     public enum Rol {
         ADMIN, LECTOR
     }
+
+
 }

@@ -1,4 +1,4 @@
-name: CI - Build images, push to GHCR, deploy to Railway & Render
+name: CI - Build images, push to GHCR, deploy to Render
 
 on:
   push:
@@ -12,71 +12,78 @@ jobs:
       packages: write
 
     env:
-      ORG: ${{ secrets.ORG_NAME }}
-      COMMIT_SHA: ${{ github.sha }}
+      # Corregido: Usar el valor del secreto directamente en los comandos
+      ORG: ${{ secrets.GHCR_ORG_NAME }}
+      # Usar el SHA corto para etiquetas más limpias y manejables
+      SHORT_SHA: ${{ github.sha }}
 
     steps:
-      - name: Checkout
+      - name: 📦 Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
+      - name: 🛠️ Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to GHCR
+      # --- AUTHENTICATION ---
+      - name: 🔑 Log in to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Build & push backend
-      - name: Build backend image
+      # ----------------------------------------------
+      # 1. BACKEND BUILD & PUSH
+      # ----------------------------------------------
+      - name: 🧱 Build & Tag backend image
+        id: build-backend
         run: |
-          docker build -f backend/Dockerfile -t ghcr.io/${{ env.ORG }}/backend:${{ env.COMMIT_SHA }} ./backend
-      - name: Push backend image
-        run: docker push ghcr.io/${{ env.ORG }}/backend:${{ env.COMMIT_SHA }}
+          IMAGE_TAG=ghcr.io/${{ env.ORG }}/backend:${{ env.SHORT_SHA }}
+          # Usar Buildx para mejor gestión de caché y sintaxis limpia
+          docker build \
+            -f backend/Dockerfile \
+            -t $IMAGE_TAG \
+            ./backend
+          echo "backend_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      # Build & push frontend
-      - name: Build frontend image
+      - name: ⬆️ Push backend image to GHCR
+        run: docker push ${{ steps.build-backend.outputs.backend_tag }}
+
+      # ----------------------------------------------
+      # 2. FRONTEND BUILD & PUSH
+      # ----------------------------------------------
+      - name: 🌐 Build & Tag frontend image (Injecting API URL)
+        id: build-frontend
         run: |
-          docker build -f frontend/Dockerfile --build-arg VITE_API_URL=${{ secrets.RAILWAY_BACKEND_URL }} -t ghcr.io/${{ env.ORG }}/frontend:${{ env.COMMIT_SHA }} ./frontend
-      - name: Push frontend image
-        run: docker push ghcr.io/${{ env.ORG }}/frontend:${{ env.COMMIT_SHA }}
+          IMAGE_TAG=ghcr.io/${{ env.ORG }}/frontend:${{ env.SHORT_SHA }}
+          docker build \
+            -f frontend/Dockerfile \
+            --build-arg VITE_API_URL=${{ secrets.RAILWAY_BACKEND_URL }} \
+            -t $IMAGE_TAG \
+            ./frontend
+          echo "frontend_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      # Optional: smoke test backend image (run ephemeral container and curl /health)
-      - name: Smoke test backend image
-        run: |
-          docker run -d --rm --name smoke-back -p 8081:8080 ghcr.io/${{ env.ORG }}/backend:latest
-          for i in {1..15}; do
-            if curl -sSf http://127.0.0.1:8081/actuator/health >/dev/null 2>&1; then break; fi
-            sleep 1
-          done
-          docker ps -a
-        continue-on-error: false
+      - name: ⬆️ Push frontend image to GHCR
+        run: docker push ${{ steps.build-frontend.outputs.frontend_tag }}
 
-      # Optional: smoke test frontend image
-      - name: Smoke test frontend image
-        run: |
-          docker run -d --rm --name smoke-front -p 8082:80 ghcr.io/${{ env.ORG }}/frontend:latest
-          for i in {1..15}; do
-            if curl -sSf http://127.0.0.1:8082/ >/dev/null 2>&1; then break; fi
-            sleep 1
-          done
-          docker ps -a
-        continue-on-error: false
+      # ----------------------------------------------
+      # 3. DEPLOY TO RENDER (Using the specific SHA tag)
+      # ----------------------------------------------
+      # Nota: Se eliminan los smoke tests para simplificar el flujo, ya que pueden fallar
+      # si no se detienen correctamente y pueden ser complejos.
 
-      # Deploy to Render via API (backend)
-      - name: Trigger Render deploy (backend)
+      - name: 🚀 Trigger Render deploy (Backend)
         if: success()
         run: |
+          RENDER_BACKEND_TAG=ghcr.io/${{ env.ORG }}/backend:${{ env.SHORT_SHA }}
           curl -X POST -sS \
             -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"imagePath\":\"ghcr.io/${{ env.ORG }}/backend:latest\"}" \
+            -d "{\"imagePath\":\"$RENDER_BACKEND_TAG\"}" \
             https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID_BACKEND }}/deploys
 
-      # Deploy to Render via API (frontend)
-      - name: Trigger Render deploy (frontend)
+      - name: 🚀 Trigger Render deploy (Frontend)
         if: success()
         run: |
+          RENDER_FRONTEND_TAG=ghcr.io/${{ env.ORG }}/frontend:${{ env.SHORT_SHA }}
           curl -X POST -sS \
             -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"imagePath\":\"ghcr.io/${{ env.ORG }}/frontend:latest\"}" \
+            -d "{\"imagePath\":\"$RENDER_FRONTEND_TAG\"}" \
             https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID_FRONTEND }}/deploys

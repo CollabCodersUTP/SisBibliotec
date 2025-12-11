@@ -1,4 +1,4 @@
-name: CI - Build images, push to GHCR, deploy to Render
+name: CI - Build images, push to GHCR, deploy to Renders
 
 on:
   push:

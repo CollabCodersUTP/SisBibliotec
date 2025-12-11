@@ -3,21 +3,29 @@
 # ----------------------------------------------------
 FROM oven/bun:1 AS builder
 
-# Establece el directorio de trabajo dentro del contenedor
+# ****************************************************
+# ** CORRECCIÓN CRUCIAL: INYECCIÓN DE VITE_API_URL **
+# ****************************************************
+# 1. ACEPTAR el argumento de construcción desde GitHub Actions
+ARG VITE_API_URL
+
+# 2. DEFINIR la variable de entorno para que Vite (Bun run build) pueda leerla
+# Esto fuerza a que el valor de Railway se "queme" en el JavaScript.
+ENV VITE_API_URL=$VITE_API_URL
+
 WORKDIR /app
 
-# 1. Copia solo los archivos de dependencia (package.json y bun.lock)
-# ¡CORRECCIÓN AQUÍ! Cambiamos 'bun.lockb' por 'bun.lock'
+# 3. Copia y instala dependencias para aprovechar el cache de Docker
 COPY package.json bun.lock ./
 
-# 2. Instala las dependencias
+# Nota: Asumo que 'bun.lock' es el archivo correcto para Bun 1
 RUN bun install
 
-# 3. Copia el resto del código fuente del proyecto
+# 4. Copia el resto del código fuente del proyecto
 COPY . .
 
-# 4. EJECUTA EL COMANDO DE CONSTRUCCIÓN
-# Esto genera los archivos estáticos en la carpeta de salida (generalmente 'dist')
+# 5. EJECUTA EL COMANDO DE CONSTRUCCIÓN
+# Esto genera los archivos estáticos en la carpeta de salida 'dist'
 RUN bun run build
 
 # ----------------------------------------------------
@@ -26,11 +34,11 @@ RUN bun run build
 FROM nginx:stable-alpine AS production
 
 # 1. Copia los archivos estáticos construidos desde la etapa 'builder'
-# Asume que la carpeta de salida del build es '/app/dist' (ajústala si es diferente).
+# (Asumimos que la carpeta de salida de Bun/Vite es 'dist')
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# 2. Copia la configuración de Nginx para manejar rutas de SPA (Single Page Application)
-# Vemos que tienes 'nginx.conf' en la raíz, ¡esto es correcto!
+# 2. Copia la configuración de Nginx para manejar rutas de SPA
+# Asumimos que tienes 'nginx.conf' en la raíz de tu carpeta 'frontend'
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # 3. Expone el puerto por defecto de Nginx

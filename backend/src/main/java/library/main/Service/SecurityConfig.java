@@ -36,18 +36,18 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS Global Configuración Segura (Render → Railway)
+    // CORS Global Configuración Abierta (FLEXIBLE, no depende de una URL
+    // específica)
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                // ** IMPORTANTE: Reemplaza con tu dominio real de Render **
-                String renderDomain = "https://frontend-3.onrender.com";
+                // ** IMPORTANTE: Se ha eliminado la URL fija y se usa el comodín (*) **
 
                 registry.addMapping("/**")
-                        // Permite SÓLO el dominio de Render para mayor seguridad
-                        .allowedOrigins(renderDomain)
+                        // Permite peticiones desde CUALQUIER dominio para máxima compatibilidad
+                        .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*");
             }

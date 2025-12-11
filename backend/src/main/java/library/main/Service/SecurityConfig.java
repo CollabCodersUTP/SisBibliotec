@@ -43,7 +43,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 // ** IMPORTANTE: Reemplaza con tu dominio real de Render **
-                String renderDomain = "https://frontend-2-qhxj.onrender.com";
+                String renderDomain = "https://frontend-3.onrender.com";
 
                 registry.addMapping("/**")
                         // Permite SÓLO el dominio de Render para mayor seguridad

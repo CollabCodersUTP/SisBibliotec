@@ -1,31 +1,40 @@
 # ----------------------------------------------------
 # ETAPA 1: BUILDER (Construcción del Frontend con Bun)
 # ----------------------------------------------------
-FROM oven/bun:1 AS builder 
+FROM oven/bun:1 AS builder
 
-# Establece el directorio de trabajo
+# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia solo package.json (Es el mínimo necesario para bun install)
-# Si bun.lockb existe, se copiará más tarde, o se generará en el RUN bun install
-COPY package.json ./
+# 1. Copia solo los archivos de dependencia (package.json y bun.lock)
+# ¡CORRECCIÓN AQUÍ! Cambiamos 'bun.lockb' por 'bun.lock'
+COPY package.json bun.lock ./
 
-# PASO DE LIMPIEZA CLAVE: Aseguramos que no haya artefactos viejos
-RUN rm -rf node_modules
-
-# Instala todas las dependencias usando BUN (Bun buscará bun.lockb o lo creará)
+# 2. Instala las dependencias
 RUN bun install
 
-# Copia el resto de los archivos (incluyendo el código fuente y el bun.lockb recién creado si no existía antes)
+# 3. Copia el resto del código fuente del proyecto
 COPY . .
 
-# Ejecuta el script de construcción usando BUN
+# 4. EJECUTA EL COMANDO DE CONSTRUCCIÓN
+# Esto genera los archivos estáticos en la carpeta de salida (generalmente 'dist')
 RUN bun run build
 
 # ----------------------------------------------------
-# ETAPA 2: PRODUCCIÓN (Servir los archivos estáticos)
+# ETAPA 2: PRODUCTION (Servir el Frontend con Nginx)
 # ----------------------------------------------------
-FROM nginx:1.25-alpine
+FROM nginx:stable-alpine AS production
+
+# 1. Copia los archivos estáticos construidos desde la etapa 'builder'
+# Asume que la carpeta de salida del build es '/app/dist' (ajústala si es diferente).
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# 2. Copia la configuración de Nginx para manejar rutas de SPA (Single Page Application)
+# Vemos que tienes 'nginx.conf' en la raíz, ¡esto es correcto!
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+# 3. Expone el puerto por defecto de Nginx
 EXPOSE 80
+
+# 4. Comando para iniciar Nginx y servir los archivos
 CMD ["nginx", "-g", "daemon off;"]

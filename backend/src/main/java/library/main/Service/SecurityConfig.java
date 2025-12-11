@@ -2,12 +2,15 @@ package library.main.Service;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -19,8 +22,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS para Spring Security
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/usuarios/registro",
@@ -29,28 +34,32 @@ public class SecurityConfig {
                                 "/libro/**",
                                 "/favicon.ico")
                         .permitAll()
-                        .anyRequest().permitAll());
-
-        http.cors(); // habilitar CORS
+                        .anyRequest()
+                        .permitAll());
 
         return http.build();
     }
 
-    // CORS Global Configuración Abierta (FLEXIBLE, no depende de una URL
-    // específica)
+    // CONFIGURACIÓN DE CORS QUE SPRING SECURITY SÍ RECONOCE
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                // ** IMPORTANTE: Se ha eliminado la URL fija y se usa el comodín (*) **
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
 
-                registry.addMapping("/**")
-                        // Permite peticiones desde CUALQUIER dominio para máxima compatibilidad
-                        .allowedOrigins("*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                        .allowedHeaders("*");
-            }
-        };
+        // Permitir cualquier origen (Render, Railway, localhost, etc.)
+        config.setAllowedOriginPatterns(List.of("*"));
+
+        // Permitir los headers
+        config.setAllowedHeaders(List.of("*"));
+
+        // Métodos permitidos
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // Permitir credenciales si las usas (cookies, auth headers)
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
 }
